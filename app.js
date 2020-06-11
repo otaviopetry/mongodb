@@ -24,8 +24,35 @@ const orange = new Fruit ({
   review: 'The best against scurvy.'
 })
 
+const pineapple = new Fruit ({
+  name: 'Pineapple',
+  rating: 9,
+  review: 'Hmmm, pineapples.'
+})
+
 // apple.save();
 
-Fruit.insertMany([apple, orange], function(err){
-  err ? console.log(err) : console.log("Sucessfully saved all the fruits in database!");
+// we insert many records in db by using the MODEL
+// and then specify wich variables we want
+
+/* Fruit.insertMany([apple, orange, pineapple], function(err){
+  err ? console.log(err) 
+    : 
+    
+    mongoose.connection.close();
+    console.log("Sucessfully saved all the fruits in database!");
+})
+ */
+
+// challenge: iterate through the array of fruits and log only their names
+Fruit.find(function(err, fruits){
+  err ? console.log(err)
+    :
+
+    // insert this line when the last callback function of the connection succeeds
+    mongoose.connection.close();
+
+    fruits.forEach( (fruit) => {
+      console.log(fruit.name);
+    });
 })
