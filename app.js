@@ -1,68 +1,31 @@
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
+const mongoose = require('mongoose');
 
-// Connection URL
-const url = 'mongodb://127.0.0.1:27017';
+mongoose.connect('mongodb://localhost:27017/fruitsDB', { useNewUrlParser: true });
 
-// Database name
-const dbName = 'fruitsDB';
+const fruitSchema = new mongoose.Schema ({
+  name: String,
+  rating: Number,
+  review: String
+});
 
-// Create a new MongoClient
-const client = new MongoClient(url, {useUnifiedTopology: true});
+// we set the model name in singular and capitalized 
+// mongoose will create the collection in plural
+const Fruit = mongoose.model('Fruit', fruitSchema);
 
-// Use connect method to connect to the server
-client.connect(function(error) {
-    assert.equal(null, error);
-    console.log("Connected sucessfully to server.");
+const apple = new Fruit ({
+  name: 'Apple',
+  rating: 6,
+  review: 'Meh. Sometimes good.'
+});
 
-    const db = client.db(dbName);
-
-    findDocuments(db, function (){
-        client.close();
-    });    
+const orange = new Fruit ({
+  name: 'Orange',
+  rating: 10,
+  review: 'The best against scurvy.'
 })
 
-const insertDocuments = function(db, callback) {
+// apple.save();
 
-    // Get the documents collection
-    const collection = db.collection('fruits');
-
-    // Insert some documents
-    collection.insertMany([
-      {
-          name: "Apple",
-          score: 6,
-          review: "Sometimes awesome, sometimes really YUCK"
-      },
-      {
-          name: "Orange",
-          score: 8,
-          review: "Oh, this golden citric fruit"
-      },
-      {
-          name: "Banana",
-          score: 10,
-          review: "I'm living because of this fruit."
-      }
-    ], function(error, result) {
-      assert.equal(error, null);
-      assert.equal(3, result.result.n);
-      assert.equal(3, result.ops.length);
-      console.log("Inserted 3 documents into the collection");
-      callback(result);
-    });
-  }
-
-  const findDocuments = function(db, callback) {
-
-    // Get the documents collection
-    const collection = db.collection('fruits');
-
-    // Find some documents
-    collection.find({}).toArray(function(error, fruits) {
-      assert.equal(error, null);
-      console.log("Found the following records");
-      console.log(fruits)
-      callback(fruits);
-    });
-  }
+Fruit.insertMany([apple, orange], function(err){
+  err ? console.log(err) : console.log("Sucessfully saved all the fruits in database!");
+})
