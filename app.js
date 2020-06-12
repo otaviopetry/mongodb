@@ -27,13 +27,24 @@ const avocado = new Fruit ({
 })
 
 const peech = new Fruit ({
+  name: "Peech",
   rating: 10,
   review: "So good."
 })
 
-// peech.save();
+/* peech.save(); */
 
-Fruit.deleteOne(
+Fruit.deleteMany(
+  { name: /Peech/ },
+  (err) => {
+    err ? console.log(err)
+    :
+      console.log("Sucessfully deleted all matching entries from database.");
+  }
+)
+
+
+/* Fruit.deleteOne(
   { name: 'Peech' },
   (err) => {
     err ? console.log(err)
@@ -41,7 +52,7 @@ Fruit.deleteOne(
       console.log('Sucessfully deleted entry from database.')
   }
 )
-
+ */
 /* Fruit.updateOne(
   { _id: '5ee2f211465f5323f6b311a4' },
   { 
