@@ -32,52 +32,54 @@ const peech = new Fruit ({
   review: "So good."
 })
 
-/* peech.save(); */
+const pineapple = new Fruit ({
+  name: "Pineapple",
+  rating: 10,
+  review: "Excellent fruit"
+})
 
-Fruit.deleteMany(
-  { name: /Peech/ },
-  (err) => {
-    err ? console.log(err)
-    :
-      console.log("Sucessfully deleted all matching entries from database.");
-  }
-)
-
-
-/* Fruit.deleteOne(
-  { name: 'Peech' },
-  (err) => {
-    err ? console.log(err)
-    :
-      console.log('Sucessfully deleted entry from database.')
-  }
-)
- */
-/* Fruit.updateOne(
-  { _id: '5ee2f211465f5323f6b311a4' },
-  { 
-    name: 'Avocado',
-    review: 'I could eat it everyday!!!'
-  },
-  (err) => {
-    err ? console.log(err)
-    :
-      console.log('Successfully update.');
-  }
-)
- */
-
-
-// challenge: iterate through the array of fruits and log only their names
-
-/* Fruit.find(function(err, fruits){
+/* Fruit.insertMany( [peech, pineapple], (err) => {
   err ? console.log(err)
-    :
-
-    // insert this line when the last callback function of the connection succeeds
-    mongoose.connection.close();
-
-    fruits.forEach( (fruit) => {
-      console.log(fruit.name);
-    });
+  :
+    console.log("Sucessfully inserted entries in database.")
 }) */
+
+
+const personSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Check your entry. Person's name has not been defined."]
+  },
+  age: {
+    type: Number,
+    required: [true, "Person's age must be informed."]
+  },
+  favoriteFruit: fruitSchema
+});
+
+const Person = mongoose.model('Person', personSchema);
+
+const john = new Person ({
+  name: "John",
+  age: 37
+})
+
+const megan = new Person ({
+  name: "Megan",
+  age: 30,
+  favoriteFruit: pineapple
+})
+
+//megan.save();
+
+// newPerson.save();
+
+Person.updateOne(
+  { name: "John" },
+  { favoriteFruit: peech },
+  (err) => {
+    err ? console.log(err)
+    :
+      console.log("Sucessfully updated entry.")
+  }
+)
