@@ -33,7 +33,16 @@ const peech = new Fruit ({
 
 // peech.save();
 
-Fruit.updateOne(
+Fruit.deleteOne(
+  { name: 'Peech' },
+  (err) => {
+    err ? console.log(err)
+    :
+      console.log('Sucessfully deleted entry from database.')
+  }
+)
+
+/* Fruit.updateOne(
   { _id: '5ee2f211465f5323f6b311a4' },
   { 
     name: 'Avocado',
@@ -45,7 +54,7 @@ Fruit.updateOne(
       console.log('Successfully update.');
   }
 )
-
+ */
 
 
 // challenge: iterate through the array of fruits and log only their names
