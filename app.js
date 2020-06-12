@@ -3,8 +3,15 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/fruitsDB', { useNewUrlParser: true });
 
 const fruitSchema = new mongoose.Schema ({
-  name: String,
-  rating: Number,
+  name: {
+    type: String,
+    required: true
+  },
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10
+  },
   review: String
 });
 
@@ -12,40 +19,25 @@ const fruitSchema = new mongoose.Schema ({
 // mongoose will create the collection in plural
 const Fruit = mongoose.model('Fruit', fruitSchema);
 
-const apple = new Fruit ({
-  name: 'Apple',
-  rating: 6,
-  review: 'Meh. Sometimes good.'
-});
-
-const orange = new Fruit ({
-  name: 'Orange',
+const avocado = new Fruit ({
+  name: "Avocado",
   rating: 10,
-  review: 'The best against scurvy.'
+  review: "I could eat it everyday."
 })
 
-const pineapple = new Fruit ({
-  name: 'Pineapple',
-  rating: 9,
-  review: 'Hmmm, pineapples.'
+const peech = new Fruit ({
+  name: "Peech",
+  rating: 10,
+  review: "So good."
 })
 
-// apple.save();
+peech.save();
 
-// we insert many records in db by using the MODEL
-// and then specify wich variables we want
 
-/* Fruit.insertMany([apple, orange, pineapple], function(err){
-  err ? console.log(err) 
-    : 
-    
-    mongoose.connection.close();
-    console.log("Sucessfully saved all the fruits in database!");
-})
- */
 
 // challenge: iterate through the array of fruits and log only their names
-Fruit.find(function(err, fruits){
+
+/* Fruit.find(function(err, fruits){
   err ? console.log(err)
     :
 
@@ -55,4 +47,4 @@ Fruit.find(function(err, fruits){
     fruits.forEach( (fruit) => {
       console.log(fruit.name);
     });
-})
+}) */
