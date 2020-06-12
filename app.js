@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/fruitsDB', { useNewUrlParser: true });
 
 const fruitSchema = new mongoose.Schema ({
+
   name: {
     type: String,
-    required: true
+    required: [true, 'Please check your data entry, no name specified']
   },
   rating: {
     type: Number,
@@ -26,12 +27,24 @@ const avocado = new Fruit ({
 })
 
 const peech = new Fruit ({
-  name: "Peech",
   rating: 10,
   review: "So good."
 })
 
-peech.save();
+// peech.save();
+
+Fruit.updateOne(
+  { _id: '5ee2f211465f5323f6b311a4' },
+  { 
+    name: 'Avocado',
+    review: 'I could eat it everyday!!!'
+  },
+  (err) => {
+    err ? console.log(err)
+    :
+      console.log('Successfully update.');
+  }
+)
 
 
 
